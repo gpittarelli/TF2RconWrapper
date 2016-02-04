@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/james4k/rcon"
 )
@@ -44,8 +45,9 @@ func (c *TF2RconConnection) Query(req string) (string, error) {
 		if reqID == respID {
 			break
 		} else if counter < 0 {
-			return "", errors.New("Couldn't get a response.")
+			return "", errors.New("Server didn't responsd to query.")
 		} else {
+			time.Sleep(500 * time.Millisecond)
 			counter--
 			resp, respID, respErr = c.rc.Read()
 			if respErr != nil {
